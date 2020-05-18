@@ -16,6 +16,8 @@
 #define SCL_PIN 16
 #define SLAVE_ADDR 8
 int led = LED_BUILTIN;
+char char_msg[5];
+
 
 void setup()
 {
@@ -40,10 +42,14 @@ void loop()
 void receiveEvent(int howMany)
 {
   digitalWrite(led, HIGH);       // briefly flash the LED
+  byte index = 0;  //character counter
+
   while(Wire.available() > 1) {  // loop through all but the last
-    char c = Wire.read();        // receive byte as a character
-    Serial.print(c);             // print the character
+    char_msg[index++] = Wire.read();        // receive byte as a character
+//    Serial.print(c);             // print the character
   }
+  Serial.print("Teensy3.2..Slave Reader");
+  Serial.print(char_msg);             // print the character
   int x = Wire.read();           // receive byte as an integer
   Serial.println(x);             // print the integer
   digitalWrite(led, LOW);
